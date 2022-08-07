@@ -36,3 +36,6 @@ lerna-debug.log*
 
 #Docker
 docker-compose.yml
+
+#Prisma
+.env
