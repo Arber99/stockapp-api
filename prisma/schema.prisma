@@ -9,3 +9,41 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String   @unique
+  hash      String
+  cash      Float    @default(100000.00)
+  firstName String?
+
+  bookmarks Bookmark[]
+  Stock     Stock[]
+
+  @@map("users")
+}
+
+model Stock {
+  id     Int    @id @default(autoincrement())
+  ticker String
+  amount Int
+  userId Int
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("stocks")
+}
+
+model Bookmark {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String
+  description String?
+  link        String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@map("bookmarks")
+}
