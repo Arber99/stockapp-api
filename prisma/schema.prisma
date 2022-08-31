@@ -21,6 +21,7 @@ model User {
 
   bookmarks Bookmark[]
   Stock     Stock[]
+  History   History[]
 
   @@map("users")
 }
@@ -33,6 +34,17 @@ model Stock {
   user   User   @relation(fields: [userId], references: [id])
 
   @@map("stocks")
+}
+
+model History {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  ticker    String
+  price     Float
+  amount    Int
+  type      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Bookmark {

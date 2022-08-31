@@ -8,9 +8,14 @@ import { StockService } from './stock.service';
 @Controller('stocks')
 export class StockController {
   constructor(private stockService: StockService) {}
-  @Post()
-  createStock(@GetUser('id') userId: number, @Body() dto: CreateStockDto) {
-    return this.stockService.createStock(userId, dto);
+  @Post('buy')
+  buyStocks(@GetUser('id') userId: number, @Body() dto: CreateStockDto) {
+    return this.stockService.buyStocks(userId, dto);
+  }
+
+  @Post('sell')
+  sellStocks(@GetUser('id') userId: number, @Body() dto: CreateStockDto) {
+    return this.stockService.sellStocks(userId, dto);
   }
 
   @Get()

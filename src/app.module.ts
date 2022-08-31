@@ -8,6 +8,8 @@ import { StockModule } from './stock/stock.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { HttpModule } from '@nestjs/axios';
 import { MarketModule } from './market/market.module';
+import { HistoryService } from './history/history.service';
+import { HistoryModule } from './history/history.module';
 
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import { MarketModule } from './market/market.module';
       }),
       inject: [ConfigService],
     }),
+    HistoryModule,
   ],
+  providers: [HistoryService],
 })
 export class AppModule {}
