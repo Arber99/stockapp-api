@@ -27,8 +27,6 @@ export class StockService {
 
       if (entry !== null) {
         stockId = entry.id;
-      } else {
-        throw new ForbiddenException("Couldn't find the stock");
       }
 
       const price = this.market
