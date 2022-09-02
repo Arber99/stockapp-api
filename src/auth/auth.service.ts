@@ -24,11 +24,6 @@ export class AuthService {
           email: dto.email,
           hash,
         },
-        // select: {
-        //   id: true,
-        //   email: true,
-        //   createdAt: true,
-        // },
       });
       return this.signToken(user.id, user.email);
     } catch (error) {

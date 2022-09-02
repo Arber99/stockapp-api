@@ -1,80 +1,79 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Cron } from '@nestjs/schedule';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Market } from './dto';
 
+type Chart = {
+  ticker: string;
+  prices: number[];
+};
 @Injectable()
-export class MarketService {
+export class ChartService {
   constructor(
     private prisma: PrismaService,
     private readonly httpService: HttpService,
     private readonly config: ConfigService,
   ) {}
 
-  status = false;
+  public chart: Chart[] = [];
 
-  async cronMarketData() {
-    await this.getMarketData();
-    this.status = true;
+  async cronMarketData(start: string, end: string) {
+    await this.getChartData(start, end);
   }
 
-  getMarketData() {
+  getChartData(start: string, end: string) {
     return this.httpService.axiosRef
-      .get('https://data.alpaca.markets/v2/stocks/quotes/latest', {
+      .get('https://data.alpaca.markets/v2/stocks/bars', {
         headers: {
           'Content-Type': 'application/json',
           'APCA-API-KEY-ID': this.config.get('ALPACA_KEY'),
           'APCA-API-SECRET-KEY': this.config.get('ALPACA_SECRET'),
         },
         params: {
+          limit: 10000,
+          timeframe: '15Min',
+          start: start,
+          end: end,
           symbols:
             'aapl,msft,goog,amzn,tsla,unh,tsm,jnj,v,meta,nvda,xom,wmt,pg,jpm,ma,hd,cvx,lly,ko,bac,pfe,pep,abbv,nvo,cost,baba,mrk,tmo,asml,avgo,tm,bhp,dis,dhr,azn,orcl,shel,csco,acn,adbe,mcd,abt,nvs,vz,tmus,ups,crm,nke,nee,wfc,cmcsa,qcom,txn,bmy,pm,ms,amd,unp,lin,tte,intc,schw,cop,ptr,ry,rtx,hon,cvs,low,amgn,t,hsbc,eqnr,intu,spgi,amt,bx',
         },
       })
-      .then((market) => {
-        const marketList = [];
-        for (const [key, value] of Object.entries(market.data.quotes)) {
-          marketList.push({
+      .then((chart) => {
+        const chartList: Chart[] = [];
+        for (const [key, value] of Object.entries(chart.data.bars)) {
+          const priceList: number[] = [];
+          const valueList: any = value;
+          valueList.forEach((element) => {
+            priceList.push(element['o']);
+          });
+          chartList.push({
             ticker: key,
-            ap: value['ap'],
-            bp: value['bp'],
+            prices: priceList,
           });
         }
-        marketList.sort((a, b) => (a.ticker > b.ticker ? 1 : -1));
-        marketList.forEach((element) => {
-          this.setMarket(element);
+        chartList.forEach((element) => {
+          this.setChart(element);
         });
       });
   }
 
-  async getMarket() {
-    return {
-      marketData: await this.prisma.currentStock.findMany(),
-      marketStatus: await this.getStatus(),
-    };
-  }
-
-  async getStatus() {
-    return await this.status;
-  }
-
-  async setMarket(market: Market) {
-    const marketList = await this.prisma.currentStock.upsert({
+  async setChart(chart: Chart) {
+    const char = await this.prisma.dailyChart.upsert({
       where: {
-        ticker: market.ticker,
+        ticker: chart.ticker,
       },
       update: {
-        bp: market.bp,
-        ap: market.ap,
+        prices: chart.prices,
       },
       create: {
-        ticker: market.ticker,
-        bp: market.bp,
-        ap: market.ap,
+        ticker: chart.ticker,
+        prices: chart.prices,
       },
     });
-    return marketList;
+    return char;
+  }
+
+  async getChart() {
+    return await this.prisma.dailyChart.findMany();
   }
 }

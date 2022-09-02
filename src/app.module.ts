@@ -10,6 +10,9 @@ import { HttpModule } from '@nestjs/axios';
 import { MarketModule } from './market/market.module';
 import { HistoryService } from './history/history.service';
 import { HistoryModule } from './history/history.module';
+import { ChartService } from './chart/chart.service';
+import { ChartModule } from './chart/chart.module';
+import { CronService } from './cron/cron.service';
 
 @Module({
   imports: [
@@ -32,7 +35,8 @@ import { HistoryModule } from './history/history.module';
       inject: [ConfigService],
     }),
     HistoryModule,
+    ChartModule,
   ],
-  providers: [HistoryService],
+  providers: [HistoryService, ChartService, CronService],
 })
 export class AppModule {}

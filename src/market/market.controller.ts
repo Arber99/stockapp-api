@@ -8,7 +8,7 @@ export class MarketController {
   constructor(private market: MarketService) {}
 
   @Get()
-  getMarket() {
-    return this.market.getMarket();
+  async getMarket() {
+    return await this.market.getMarket();
   }
 }

@@ -29,9 +29,10 @@ export class StockService {
         stockId = entry.id;
       }
 
-      const price = this.market
-        .getMarket()
-        .marketData.find((element) => element.ticker === dto.ticker).ap;
+      const market = await this.market.getMarket();
+      const price = market.marketData.find(
+        (element) => element.ticker === dto.ticker,
+      ).ap;
 
       const cash = await this.prisma.user.update({
         where: {
@@ -85,9 +86,10 @@ export class StockService {
       }
       stockId = entry.id;
 
-      const price = this.market
-        .getMarket()
-        .marketData.find((element) => element.ticker === dto.ticker).bp;
+      const market = await this.market.getMarket();
+      const price = market.marketData.find(
+        (element) => element.ticker === dto.ticker,
+      ).bp;
 
       const cash = await this.prisma.user.update({
         where: {
