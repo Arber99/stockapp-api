@@ -20,7 +20,7 @@ export class CronService {
     this.marketService.cronMarketData();
   }
 
-  @Cron('30 45/15 15 * * 1-5')
+  @Cron('50 45/15 15 * * 1-5')
   chartQuarter() {
     const start = new Date(Date.now());
     start.setHours(15);
@@ -31,7 +31,7 @@ export class CronService {
     this.chartService.cronMarketData(start.toISOString(), end.toISOString());
   }
 
-  @Cron('30 */15 16-21 * * 1-5')
+  @Cron('50 */15 16-21 * * 1-5')
   chartFull() {
     const start = new Date(Date.now());
     start.setHours(15);
@@ -42,7 +42,7 @@ export class CronService {
     this.chartService.cronMarketData(start.toISOString(), end.toISOString());
   }
 
-  @Cron('30 0-15/15 22 * * 1-5')
+  @Cron('50 0,15 22 * * 1-5')
   chartFinal() {
     const start = new Date(Date.now());
     start.setHours(15);
