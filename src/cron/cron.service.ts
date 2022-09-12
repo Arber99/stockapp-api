@@ -42,7 +42,18 @@ export class CronService {
     this.chartService.cronMarketData(start.toISOString(), end.toISOString());
   }
 
-  @Cron('50 0,15 22 * * 1-5')
+  @Cron('50 0 22 * * 1-5')
+  chartClose() {
+    const start = new Date(Date.now());
+    start.setHours(15);
+    start.setMinutes(30);
+    start.setSeconds(0);
+    start.setMilliseconds(0);
+    const end = new Date(Date.now() - 910000);
+    this.chartService.cronMarketData(start.toISOString(), end.toISOString());
+  }
+
+  @Cron('50 15 22 * * 1-5')
   chartFinal() {
     const start = new Date(Date.now());
     start.setHours(15);
