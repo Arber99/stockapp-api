@@ -13,6 +13,7 @@ import { HistoryModule } from './history/history.module';
 import { ChartService } from './chart/chart.service';
 import { ChartModule } from './chart/chart.module';
 import { CronService } from './cron/cron.service';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { CronService } from './cron/cron.service';
     }),
     HistoryModule,
     ChartModule,
+    MailModule,
   ],
   providers: [HistoryService, ChartService, CronService],
 })
