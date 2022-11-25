@@ -14,6 +14,9 @@ import { ChartService } from './chart/chart.service';
 import { ChartModule } from './chart/chart.module';
 import { CronService } from './cron/cron.service';
 import { MailModule } from './mail/mail.module';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard } from '@nestjs/throttler/dist/throttler.guard';
 
 @Module({
   imports: [
@@ -35,10 +38,22 @@ import { MailModule } from './mail/mail.module';
       }),
       inject: [ConfigService],
     }),
+    ThrottlerModule.forRoot({
+      ttl: 300,
+      limit: 1500,
+    }),
     HistoryModule,
     ChartModule,
     MailModule,
   ],
-  providers: [HistoryService, ChartService, CronService],
+  providers: [
+    HistoryService,
+    ChartService,
+    CronService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}

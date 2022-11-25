@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { HistoryService } from 'src/history/history.service';
 import { MarketService } from 'src/market/market.service';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -33,6 +37,12 @@ export class StockService {
       const price = market.marketData.find(
         (element) => element.ticker === dto.ticker,
       ).ap;
+
+      if (price < 0.01) {
+        throw new ServiceUnavailableException(
+          'The price of the stock is below 0.01. We believe that this is an error on our side.',
+        );
+      }
 
       const cash = await this.prisma.user.update({
         where: {
@@ -90,6 +100,12 @@ export class StockService {
       const price = market.marketData.find(
         (element) => element.ticker === dto.ticker,
       ).bp;
+
+      if (price < 0.01) {
+        throw new ServiceUnavailableException(
+          'The price of the stock is below 0.01. We believe that this is an error on our side.',
+        );
+      }
 
       const cash = await this.prisma.user.update({
         where: {
