@@ -5,15 +5,14 @@ import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { MailService } from 'src/mail/mail.service';
+//import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
-    private config: ConfigService,
-    private mail: MailService,
+    private config: ConfigService, //private mail: MailService,
   ) {}
 
   async signup(dto: AuthDto) {
