@@ -15,7 +15,7 @@ export class CronService {
     this.marketService.cronMarketData();
   }
 
-  @Cron('15 */1 16-21 * * 1-7')
+  @Cron('15 */1 16-21 * * *')
   marketFull() {
     console.log('cron is running');
     this.marketService.cronMarketData();
