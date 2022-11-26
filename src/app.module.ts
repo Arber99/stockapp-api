@@ -13,7 +13,7 @@ import { HistoryModule } from './history/history.module';
 import { ChartService } from './chart/chart.service';
 import { ChartModule } from './chart/chart.module';
 import { CronService } from './cron/cron.service';
-import { MailModule } from './mail/mail.module';
+// import { MailModule } from './mail/mail.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler/dist/throttler.guard';
@@ -44,7 +44,7 @@ import { ThrottlerGuard } from '@nestjs/throttler/dist/throttler.guard';
     }),
     HistoryModule,
     ChartModule,
-    MailModule,
+    // MailModule,
   ],
   providers: [
     HistoryService,
