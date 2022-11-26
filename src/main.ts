@@ -11,6 +11,9 @@ async function bootstrap() {
     optionsSuccessStatus: 204,
     credentials: true,
   });
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
