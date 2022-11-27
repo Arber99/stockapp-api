@@ -11,12 +11,12 @@ import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 import { ThrottlerBehindProxyGuard } from './guard/throttler-behind-proxy.guard';
 
+@UseGuards(ThrottlerBehindProxyGuard)
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @UseGuards(ThrottlerBehindProxyGuard)
-  @Throttle(1, 600)
+  @Throttle(2, 600)
   @Post('signup')
   signup(@Body() dto: AuthDto) {
     return this.authService.signup(dto);
