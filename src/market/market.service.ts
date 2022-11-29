@@ -16,7 +16,7 @@ export class MarketService {
 
   async cronMarketData() {
     await this.getMarketData();
-    await this.prisma.status.update({
+    await this.prisma.status.updateMany({
       where: {
         status: false,
       },
@@ -27,7 +27,7 @@ export class MarketService {
   }
 
   async closeMarket() {
-    await this.prisma.status.update({
+    await this.prisma.status.updateMany({
       where: {
         status: true,
       },
