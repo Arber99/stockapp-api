@@ -24,7 +24,6 @@ export class MarketService {
         status: true,
       },
     });
-    console.log('THIS IS RUN');
   }
 
   async closeMarket() {
