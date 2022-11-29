@@ -17,7 +17,8 @@ export class StockService {
   ) {}
 
   async buyStocks(userId: number, dto: CreateStockDto) {
-    if (this.market.getStatus()) {
+
+    if ((await this.market.getStatus()).status) {
       if (dto.amount < 1) {
         throw new ForbiddenException('Enter an amount bigger or equal than 1');
       }
@@ -80,7 +81,7 @@ export class StockService {
   }
 
   async sellStocks(userId: number, dto: CreateStockDto) {
-    if (this.market.getStatus()) {
+    if ((await this.market.getStatus()).status) {
       let stockId = 0;
       const entry = await this.prisma.stock.findFirst({
         where: {
