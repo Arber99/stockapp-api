@@ -24,6 +24,7 @@ export class MarketService {
         status: true,
       },
     });
+    console.log('THIS IS RUN');
   }
 
   async closeMarket() {
@@ -69,7 +70,7 @@ export class MarketService {
   async getMarket() {
     return {
       marketData: await this.prisma.currentStock.findMany(),
-      marketStatus: await this.prisma.status.findFirst(),
+      marketStatus: (await this.prisma.status.findFirst()).status,
     };
   }
 
