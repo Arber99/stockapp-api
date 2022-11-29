@@ -69,7 +69,7 @@ export class MarketService {
   async getMarket() {
     return {
       marketData: await this.prisma.currentStock.findMany(),
-      marketStatus: await this.prisma.status.findFirst(),
+      marketStatus: await this.prisma.status.findMany(),
     };
   }
 
