@@ -78,20 +78,22 @@ export class MarketService {
   }
 
   async setMarket(market: Market) {
-    const marketList = await this.prisma.currentStock.upsert({
-      where: {
-        ticker: market.ticker,
-      },
-      update: {
-        bp: market.bp,
-        ap: market.ap,
-      },
-      create: {
-        ticker: market.ticker,
-        bp: market.bp,
-        ap: market.ap,
-      },
-    });
-    return marketList;
+    if (market.bp > 0 && market.ap > 0) {
+      const marketList = await this.prisma.currentStock.upsert({
+        where: {
+          ticker: market.ticker,
+        },
+        update: {
+          bp: market.bp,
+          ap: market.ap,
+        },
+        create: {
+          ticker: market.ticker,
+          bp: market.bp,
+          ap: market.ap,
+        },
+      });
+      return marketList;
+    }
   }
 }
