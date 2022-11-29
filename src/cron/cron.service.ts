@@ -66,6 +66,6 @@ export class CronService {
 
   @Cron('0 0 22 * * *')
   closeMarket() {
-    this.marketService.status = false;
+    this.marketService.closeMarket();
   }
 }

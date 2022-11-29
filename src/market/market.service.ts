@@ -26,6 +26,17 @@ export class MarketService {
     });
   }
 
+  async closeMarket() {
+    await this.prisma.status.update({
+      where: {
+        status: true,
+      },
+      data: {
+        status: false,
+      },
+    });
+  }
+
   getMarketData() {
     return this.httpService.axiosRef
       .get('https://data.alpaca.markets/v2/stocks/quotes/latest', {
