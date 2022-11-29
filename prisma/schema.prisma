@@ -49,12 +49,12 @@ model History {
 
 model CurrentStock {
   ticker String @id
-  bp Float
-  ap Float
+  bp     Float
+  ap     Float
 }
 
 model DailyChart {
-  ticker String @id
+  ticker String  @id
   prices Float[]
 
   @@map("dailyChart")
@@ -71,4 +71,8 @@ model Bookmark {
   user        User     @relation(fields: [userId], references: [id])
 
   @@map("bookmarks")
+}
+
+model Status {
+  status Boolean @id @default(false)
 }

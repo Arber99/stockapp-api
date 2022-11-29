@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cron } from '@nestjs/schedule';
+import { find } from 'rxjs';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Market } from './dto';
 
@@ -13,11 +14,16 @@ export class MarketService {
     private readonly config: ConfigService,
   ) {}
 
-  status = false;
-
   async cronMarketData() {
     await this.getMarketData();
-    this.status = true;
+    await this.prisma.status.update({
+      where: {
+        status: false,
+      },
+      data: {
+        status: true,
+      },
+    });
   }
 
   getMarketData() {
@@ -57,7 +63,7 @@ export class MarketService {
   }
 
   async getStatus() {
-    return await this.status;
+    return await this.prisma.status.findFirst();
   }
 
   async setMarket(market: Market) {
