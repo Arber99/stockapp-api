@@ -12,7 +12,6 @@ import { HistoryService } from './history/history.service';
 import { HistoryModule } from './history/history.module';
 import { ChartService } from './chart/chart.service';
 import { ChartModule } from './chart/chart.module';
-import { CronService } from './cron/cron.service';
 // import { MailModule } from './mail/mail.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
@@ -49,7 +48,6 @@ import { ThrottlerGuard } from '@nestjs/throttler/dist/throttler.guard';
   providers: [
     HistoryService,
     ChartService,
-    CronService,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
