@@ -40,3 +40,7 @@ docker-compose.yml
 #Environment
 .env
 .env.test
+
+#Linux
+commands.txt
+stockapp.service
