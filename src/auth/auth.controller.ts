@@ -16,7 +16,7 @@ import { ThrottlerBehindProxyGuard } from './guard/throttler-behind-proxy.guard'
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Throttle(4, 600)
+  @Throttle(15, 600)
   @Post('signup')
   signup(@Body() dto: AuthDto) {
     return this.authService.signup(dto);
