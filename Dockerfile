@@ -6,6 +6,8 @@ WORKDIR /usr/src/app
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
+COPY wait-for-it.sh ./
+RUN chmod +x ./wait-for-it.sh
 
 # Install app dependencies
 RUN npm install
@@ -16,7 +18,8 @@ COPY . .
 RUN apk add openssl && \
     apk add openssl-dev && \
     apk add libc6-compat && \
-    rm -rf /var/cache/apk/*
+    rm -rf /var/cache/apk/* && \
+    apk add --no-cache bash
 
 RUN npm run prisma:generate
 COPY prisma ./prisma/
@@ -28,4 +31,8 @@ RUN npm run build
 EXPOSE 3000
 
 # Use 'entrypoint' to run the script at container startup
-ENTRYPOINT ["sh", "-c", "sleep 15 && node dist/main.js && npm run prisma:migrate && sleep 15 && npm run prisma:push"]
+ENTRYPOINT ["sh", "-c", "\
+    ./wait-for-it.sh postgres:5432 -t 0 -- npm run prisma:migrate && \
+    npm run prisma:push && \
+    node dist/main.js & \
+    wait $!"]
