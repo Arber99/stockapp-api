@@ -32,7 +32,7 @@ EXPOSE 3000
 
 # Use 'entrypoint' to run the script at container startup
 ENTRYPOINT ["sh", "-c", "\
-    ./wait-for-it.sh postgres:5432 -t 0 -- npm run prisma:migrate && \
+    ./wait-for-it.sh postgresdb:5432 -t 0 -- npm run prisma:migrate && \
     npm run prisma:push && \
     node dist/main.js & \
     wait $!"]
